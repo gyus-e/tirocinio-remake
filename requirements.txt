@@ -1,0 +1,9 @@
+Flask
+flask_sqlalchemy
+python-dotenv
+llama-index-core
+llama-index-llms-huggingface
+llama-index-embeddings-huggingface
+transformers
+accelerate
+torch

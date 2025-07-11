@@ -1,0 +1,6 @@
+**__pycache__
+_documents
+_storage
+_huggingface
+.venv
+.env
