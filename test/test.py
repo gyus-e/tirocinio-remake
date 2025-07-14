@@ -41,7 +41,7 @@ if not os.path.exists(cache_path):
 rag.initialize_settings(configuration)
 index = rag.Index(documents).index()
 query_engine = rag.QueryEngine(index=index).query_engine()
-agent = rag.Agent(query_engine=query_engine, configuration=configuration)
+agent = rag.Agent(query_engine=query_engine, configuration=configuration).agent()
 
 
 # Test
@@ -57,7 +57,7 @@ async def test():
         
         print("\n")
         
-        rag_answer = await agent.agent().run(question)
+        rag_answer = await agent.run(question)
         print(f"RAG Answer: {rag_answer}\n")
 
 
