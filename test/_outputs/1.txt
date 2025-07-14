@@ -1,0 +1,132 @@
+Colab T4
+model_name = "meta-llama/Llama-3.2-1B-Instruct"
+system_prompt = """
+You are an assistant who provides concise factual answers from the context provided.
+"""
+rag_configuration = {
+    "embed_model_name": "BAAI/bge-base-en-v1.5",
+    "chunk_size": 512,
+    "chunk_overlap": 64,
+    "temperature": 0.0,
+}
+
+
+2025-07-14 11:11:34.889090: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1752491494.908805    3217 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1752491494.914741    3217 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-07-14 11:11:34.934971: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Loading documents from directory...
+WARNING:llama_index.core.readers.file.base:`llama-index-readers-file` package not found, some file readers will not be available if not provided by the `file_extractor` parameter.
+WARNING:llama_index.core.readers.file.base:`llama-index-readers-file` package not found, some file readers will not be available if not provided by the `file_extractor` parameter.
+WARNING:llama_index.core.readers.file.base:`llama-index-readers-file` package not found, some file readers will not be available if not provided by the `file_extractor` parameter.
+Loaded 3 documents.
+Index created. Persisting to storage...
+Index persisted to storage.
+Creating query engine...
+Query engine created.
+
+	****************************************
+
+Question: Qual è l'obiettivo dichiarato da Scipione Ammirato nella sua opera?
+CAG Answer: La risposta è: **Risolvere problemi di famiglia**.
+
+<|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|> <|python_tag|
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: Thought: Scipione Ammirato, un filosofo e storico romano, dichiarò l'obiettivo della sua opera di esplorare la natura umana, il sapere e la politica.
+Action: search_documents
+Input: {"properties": {"query": "Scipione Ammirato", "type": "string", "required": ["query"], "properties": {"name": "Scipione Ammirato"}}
+
+
+	****************************************
+
+Question: Che tipo di illustrazione accompagna l'opera e che funzione ha?
+CAG Answer: Risposta: La prima parte delle famiglie nobili napoletane di Scipione Ammirato è accompagnata da un'illustrazione allegorica, che rappresenta la vita di Cristo, e che è stata realizzata da un'artista toscana. Questa illustrazione è stata realizzata per la prima volta nel 1580.assistant<
+L'illustrazione allegorica rappresenta la vita di Cristo.
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: **Thought**: L'illustrazione è una rappresentazione visiva dell'argomento e della struttura del testo, utilizzando immagini, grifi e altri elementi per enfatizzare i punti chiave e rendere più comprensibile il contenuto.
+
+**Action**: search_documents(query: "il tipo di illustrazione")
+
+
+	****************************************
+
+Question: Quali sono le anomalie presenti nella numerazione delle pagine e che implicazioni potrebbero avere?
+CAG Answer: La risposta:
+Le anomalie presenti nella numerazione delle pagine sono:
+- 160 passa a 173, ritorna a 161, prosegue fino a 172, salta da 172 a 185.
+- Marca tipografica: nella cornice del frontespizio figure allegoriche che affiancano due stemmi medici sormontati da corona.
+- Marca tipografica: sul contropiatto posteriore timbro del
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: Thought: La numerazione delle pagine può essere un problema nella navigazione utente.
+
+Action: search_documents(query: "pagine numerazione anomalie")
+
+
+	****************************************
+
+Question: Quali informazioni ci fornisce l'impronta tipografica sull'edizione?
+CAG Answer: La risposta è: "Laboratorio di restauro del libro - BADIA DI CAVA".assistant<|end_of_header|>
+
+La risposta è: "Laboratorio di restauro del libro - BADIA DI CAVA".assistant<|end_of_header|>
+
+La risposta è: "Laboratorio di restauro del libro - BADIA DI CAVA".assistant<|end_of_header|>
+
+La risposta è: "Laboratorio di resta
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: **Thought: La questione richiesta richiede informazioni sull'impronta tipografica sull'edizione.**
+
+**Action: search_documents**
+
+**Input: {"properties": {"query": "impronta tipografica sull'edizione", "required": ["query"], "type": "object"}
+
+
+**Observation: La risposta del tool è stata generata utilizzando la query "impronta tipografica sull'edizione".**
+
+**Thought: La risposta del tool è stata generata utilizzando la query "impronta tipografica sull'edizione".**
+
+**Action Input: {"input": "impronta tipografica sull'edizione", "num_beams": 5}
+
+
+	****************************************
+
+Question: Quali sono le orazioni di Cicerone incluse in questa edizione?
+CAG Answer: Risposta: Le orazioni di Cicerone sono presenti in questa edizione, ma non sono state riportate in testo. Tuttavia, la copertina dell'opera contiene una citazione di Cicerone: "Veni, et tuam, et tuam, et tuam" (Cicerone, Orazio, Orazioni, 1, 1). Questa citazione è una delle più famose e rappresenta
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: La tua lingua. I need to use a tool to help me answer the question. Tool Args: {"properties": {"query": {"title": "Query", "type": "string"}, "required": ["query"], "type": "object"}
+
+
+Thought: Non sono sicuro di cosa intendi con "orazioni di Cicerone".
+
+
+	****************************************
+
+Question: Qual è il contributo specifico di Leonardo Liparulo all'opera originale di Andrea d'Isernia?
+CAG Answer: La risposta è: non è specifico, poiché non è menzionato in alcun passaggio dell'opera.assistant<
+La risposta è: non è specifico, poiché non è menzionato in alcun passaggio dell'opera.assistant<|end_of_header|>
+
+La risposta è: non è specifico, poiché non è menzionato in alcun passaggio dell'opera.
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: Thought: Il contributo specifico di Leonardo Liparulo all'opera originale di Andrea d'Isernia non è specifico. Posso cercare informazioni su questo argomento nella documentazione di assistenza o fornire informazioni generali su Andrea d'Isernia.
+
+Action: search_documents(query="Andrea d'Isernia")
+

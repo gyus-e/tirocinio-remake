@@ -4,7 +4,8 @@ from utils import DB
 model_name = "meta-llama/Llama-3.2-1B-Instruct"
 
 system_prompt = """
-You are an assistant who provides concise factual answers from the context provided.
+Sei un assistente bibliotecario che deve fornire informazioni sui libri nel catalogo.
+Estrai le informazioni richieste dal contesto fornito.
 """
 
 rag_configuration = {
