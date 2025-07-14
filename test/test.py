@@ -20,7 +20,7 @@ if not os.path.exists(cache_path):
     documents = Collection().documents()
 
     document_texts = [doc.text for doc in documents]
-    cag_prompt = cag.build_cag_context("Sei l'assistente bibliotecario della Biblioteca Pontaniana di Napoli. Rispondi brevemente alle domande basandoti sul contesto fornito.", document_texts)
+    cag_prompt = cag.build_cag_context("Sei l'assistente bibliotecario della Biblioteca Pontaniana di Napoli.", document_texts)
 
     cache = cag.create_kv_cache(
         model=model,
