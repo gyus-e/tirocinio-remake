@@ -14,7 +14,7 @@ documents = Collection().documents()
 
 # CAG initialization
 document_texts = [doc.text for doc in documents]
-prompt = f"""
+cag_prompt = f"""
 <|system|>
 {configuration.system_prompt}
 <|user|>
@@ -32,7 +32,7 @@ if not os.path.exists(cache_path):
     cache = cag.create_kv_cache(
         model=model,
         tokenizer=tokenizer,
-        prompt=prompt.strip(),
+        prompt=cag_prompt,
     )
     cag.save_cache(cache, storage=STORAGE, cache_name=CACHE_NAME)
 
@@ -41,7 +41,7 @@ if not os.path.exists(cache_path):
 rag.initialize_settings(configuration)
 index = rag.Index(documents).index()
 query_engine = rag.QueryEngine(index=index).query_engine()
-agent = rag.Agent(query_engine=query_engine, configuration=configuration).agent()
+agent = rag.Agent(query_engine=query_engine, system_prompt=configuration.system_prompt).agent()
 
 
 # Test
