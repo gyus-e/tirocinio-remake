@@ -7,9 +7,12 @@ from controller import cag, rag
 from utils import Collection
 from .configuration_mock import configuration
 
-documents = Collection().documents()
-document_texts = [doc.text for doc in documents]
 
+documents = Collection().documents()
+
+
+# CAG initialization
+document_texts = [doc.text for doc in documents]
 prompt = f"""
 <|system|>
 {configuration.system_prompt}
@@ -18,8 +21,6 @@ Context:
 {document_texts}
 Question:
 """
-
-# CAG initialization
 tokenizer = AutoTokenizer.from_pretrained(configuration.model_name)
 device = Accelerator().device
 model = AutoModelForCausalLM.from_pretrained(configuration.model_name, device_map=device)
@@ -39,6 +40,7 @@ rag.initialize_settings(configuration)
 index = rag.Index(documents).index()
 query_engine = rag.QueryEngine(index=index).query_engine()
 agent = rag.Agent(query_engine=query_engine, configuration=configuration)
+
 
 # Test
 questions = [
