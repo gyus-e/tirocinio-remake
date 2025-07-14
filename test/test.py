@@ -2,34 +2,33 @@ import os
 import torch
 from accelerate import Accelerator
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from environ import STORAGE, CACHE_NAME
+from environ import STORAGE, CACHE_NAME, VECTOR_STORE_DIR
 from controller import cag, rag
 from utils import Collection
 from .configuration_mock import configuration
 from .questions_mock import questions
 
 
-documents = Collection().documents()
-
-
 # CAG initialization
-document_texts = [doc.text for doc in documents]
-cag_prompt = f"""
-<|begin_of_text|>
-<|start_header_id|>system<|end_header_id|>
-{configuration.system_prompt}
-<|start_header_id|>user<|end_header_id|>
-Context:
-{document_texts}
-Question:
-"""
-
 device = Accelerator().device
 model = AutoModelForCausalLM.from_pretrained(configuration.model_name, device_map=device)
 tokenizer = AutoTokenizer.from_pretrained(configuration.model_name)
 
 cache_path = os.path.join(STORAGE, CACHE_NAME)
 if not os.path.exists(cache_path):
+    documents = Collection().documents()
+
+    document_texts = [doc.text for doc in documents]
+    cag_prompt = f"""
+    <|begin_of_text|>
+    <|start_header_id|>system<|end_header_id|>
+    {configuration.system_prompt}
+    <|start_header_id|>user<|end_header_id|>
+    Context:
+    {document_texts}
+    Question:
+    """
+
     cache = cag.create_kv_cache(
         model=model,
         tokenizer=tokenizer,
@@ -40,7 +39,13 @@ if not os.path.exists(cache_path):
 
 # RAG initialization
 rag.initialize_settings(configuration)
-index = rag.Index(documents).index()
+
+if not os.path.exists(VECTOR_STORE_DIR):
+    documents = Collection().documents()
+    index = rag.Index.from_documents(documents).persist(VECTOR_STORE_DIR).index()
+else:
+    index = rag.Index.from_storage(VECTOR_STORE_DIR).index()
+
 query_engine = rag.QueryEngine(index=index).query_engine()
 agent = rag.Agent(query_engine=query_engine, system_prompt=configuration.system_prompt).agent()
 
@@ -58,8 +63,8 @@ async def test():
         
         print("\n")
         
-        # rag_answer = await agent.run(question)
-        # print(f"RAG Answer: {rag_answer}\n")
+        rag_answer = await agent.run(question)
+        print(f"RAG Answer: {rag_answer}\n")
 
 
 if __name__ == "__main__":
