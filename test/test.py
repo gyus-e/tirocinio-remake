@@ -23,7 +23,7 @@ if not os.path.exists(cache_path):
     documents = Collection().documents()
 
     document_texts = [doc.text for doc in documents]
-    cag_prompt = cag.build_cag_context("Sei l'assistente bibliotecario della Biblioteca Pontaniana di Napoli.", document_texts)
+    cag_prompt = cag.build_cag_context(configuration.system_prompt, document_texts)
 
     cache = cag.create_kv_cache(
         model=model,
@@ -45,8 +45,9 @@ else:
     index = rag.Index.from_storage(VECTOR_STORE_DIR).index()
 
 query_engine = rag.QueryEngine(index=index).query_engine()
-agent = rag.Agent(query_engine=query_engine, system_prompt=configuration.system_prompt).agent()
-
+rag_agent = rag.Agent(query_engine=query_engine, system_prompt=configuration.system_prompt)
+agent = rag_agent.agent()
+context = rag_agent.context()
 
 # Test
 async def test():
@@ -59,9 +60,11 @@ async def test():
         cag.clean_up_cache(cache)
         print(f"CAG Answer: {cag_answer}\n")
         
-        print("\n")
-        
-        rag_answer = await agent.run(question)
+    for question in questions:
+        print("\n\t****************************************\n")
+        print(f"Question: {question}")
+
+        rag_answer = await agent.run(question, ctx=context)
         print(f"RAG Answer: {rag_answer}\n")
 
 
