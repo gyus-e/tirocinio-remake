@@ -1,8 +1,7 @@
 questions = [
-    "Qual è l'obiettivo dichiarato da Scipione Ammirato nella sua opera?",
-    "Che tipo di illustrazione accompagna l'opera e che funzione ha?",
-    "Quali sono le anomalie presenti nella numerazione delle pagine e che implicazioni potrebbero avere?",
-    "Quali informazioni ci fornisce l'impronta tipografica sull'edizione?",
-    "Quali sono le orazioni di Cicerone incluse in questa edizione?",
+    "Colore dell'inchiostro nel <<Delle famiglie nobili napoletane di Scipione Ammirato parte prima>>?",
+    "Che tipo di illustrazione accompagna l'opera <<Delle famiglie nobili napoletane di Scipione Ammirato parte prima>>?",
+    "Sono presenti anomalie nella numerazione delle pagine di alcuni libri?",
+    "Quale tipo di legatura ha il <<Marci Tullii Ciceronis Orationes. Superiorum permissu>>?",
     "Qual è il contributo specifico di Leonardo Liparulo all'opera originale di Andrea d'Isernia?"
     ]
