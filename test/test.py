@@ -6,6 +6,7 @@ from environ import STORAGE, CACHE_NAME
 from controller import cag, rag
 from utils import Collection
 from .configuration_mock import configuration
+from .questions_mock import questions
 
 
 documents = Collection().documents()
@@ -21,9 +22,10 @@ Context:
 {document_texts}
 Question:
 """
-tokenizer = AutoTokenizer.from_pretrained(configuration.model_name)
+
 device = Accelerator().device
 model = AutoModelForCausalLM.from_pretrained(configuration.model_name, device_map=device)
+tokenizer = AutoTokenizer.from_pretrained(configuration.model_name)
 
 cache_path = os.path.join(STORAGE, CACHE_NAME)
 if not os.path.exists(cache_path):
@@ -43,14 +45,6 @@ agent = rag.Agent(query_engine=query_engine, configuration=configuration)
 
 
 # Test
-questions = [
-    "Who is my best friend?",
-    "Who is Claudio's wife?",
-    "What are the names Claudio's cats?",
-    "What are Arturia's interests?",
-    "Do they have any children?",
-    ]
-
 async def test():
     for question in questions:
         print("\n\t****************************************\n")
