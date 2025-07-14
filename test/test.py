@@ -51,21 +51,23 @@ context = rag_agent.context()
 
 # Test
 async def test():
-    for question in questions:
-        print("\n\t****************************************\n")
-        print(f"Question: {question}")
-        
+    print("\n\tCAG\n")
+    for i, question in enumerate(questions):
+        print(f"Question {i}: {question}")
+
         cache = torch.load(cache_path, weights_only=False)
         cag_answer = cag.get_answer(question, tokenizer, model, device, cache)
         cag.clean_up_cache(cache)
-        print(f"CAG Answer: {cag_answer}\n")
-        
-    for question in questions:
-        print("\n\t****************************************\n")
-        print(f"Question: {question}")
+        print(f"CAG: {cag_answer}\n")
+
+    print("\t*********************************")
+    
+    print("\n\tRAG\n")    
+    for i, question in enumerate(questions):
+        print(f"Question {i}: {question}")
 
         rag_answer = await agent.run(question, ctx=context)
-        print(f"RAG Answer: {rag_answer}\n")
+        print(f"RAG: {rag_answer}\n")
 
 
 if __name__ == "__main__":
