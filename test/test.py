@@ -8,6 +8,7 @@ from utils import Collection
 from .configuration_mock import configuration
 from .questions_mock import questions
 
+documents = None
 
 # CAG initialization
 device = Accelerator().device
@@ -19,15 +20,7 @@ if not os.path.exists(cache_path):
     documents = Collection().documents()
 
     document_texts = [doc.text for doc in documents]
-    cag_prompt = f"""
-    <|begin_of_text|>
-    <|start_header_id|>system<|end_header_id|>
-    {configuration.system_prompt}
-    <|start_header_id|>user<|end_header_id|>
-    Context:
-    {document_texts}
-    Question:
-    """
+    cag_prompt = cag.build_cag_context(configuration.system_prompt, document_texts)
 
     cache = cag.create_kv_cache(
         model=model,
@@ -41,8 +34,10 @@ if not os.path.exists(cache_path):
 rag.initialize_settings(configuration)
 
 if not os.path.exists(VECTOR_STORE_DIR):
-    documents = Collection().documents()
-    index = rag.Index.from_documents(documents).persist(VECTOR_STORE_DIR).index()
+    documents = Collection().documents() if not documents else documents
+    rag_index = rag.Index.from_documents(documents)
+    rag_index.persist(VECTOR_STORE_DIR)
+    index = rag_index.index()
 else:
     index = rag.Index.from_storage(VECTOR_STORE_DIR).index()
 
