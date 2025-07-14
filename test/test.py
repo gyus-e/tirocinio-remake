@@ -15,9 +15,10 @@ documents = Collection().documents()
 # CAG initialization
 document_texts = [doc.text for doc in documents]
 cag_prompt = f"""
-<|system|>
+<|begin_of_text|>
+<|start_header_id|>system<|end_header_id|>
 {configuration.system_prompt}
-<|user|>
+<|start_header_id|>user<|end_header_id|>
 Context:
 {document_texts}
 Question:
@@ -57,8 +58,8 @@ async def test():
         
         print("\n")
         
-        rag_answer = await agent.run(question)
-        print(f"RAG Answer: {rag_answer}\n")
+        # rag_answer = await agent.run(question)
+        # print(f"RAG Answer: {rag_answer}\n")
 
 
 if __name__ == "__main__":

@@ -4,8 +4,8 @@ from utils import DB
 model_name = "meta-llama/Llama-3.2-1B-Instruct"
 
 system_prompt = """
-Sei un assistente bibliotecario che deve fornire informazioni sui libri nel catalogo.
-Estrai le informazioni richieste dal contesto fornito.
+Sei un assistente bibliotecario che deve fornire informazioni sui libri nel catalogo della Biblioteca Pontaniana di Napoli.
+Rispondi alle domande degli utenti utilizzando le informazioni presenti nei documenti forniti.
 """
 
 rag_configuration = {

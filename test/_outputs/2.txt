@@ -1,0 +1,181 @@
+Colab T4
+
+model_name = "meta-llama/Llama-3.2-1B-Instruct"
+
+system_prompt = """
+Sei un assistente bibliotecario che deve fornire informazioni sui libri nel catalogo.
+Estrai le informazioni richieste dal contesto fornito.
+"""
+
+rag_configuration = {
+    "embed_model_name": "BAAI/bge-base-en-v1.5",
+    "chunk_size": 512,
+    "chunk_overlap": 64,
+    "temperature": 0.0,
+}
+
+2025-07-14 11:41:15.746745: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1752493275.767187   10934 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1752493275.773212   10934 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-07-14 11:41:15.793135: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Loading documents from directory...
+WARNING:llama_index.core.readers.file.base:`llama-index-readers-file` package not found, some file readers will not be available if not provided by the `file_extractor` parameter.
+WARNING:llama_index.core.readers.file.base:`llama-index-readers-file` package not found, some file readers will not be available if not provided by the `file_extractor` parameter.
+WARNING:llama_index.core.readers.file.base:`llama-index-readers-file` package not found, some file readers will not be available if not provided by the `file_extractor` parameter.
+Loaded 3 documents.
+Using device: cuda
+Prompt tokenized.
+DynamicCache initialized.
+KV cache created.
+Index created. Persisting to storage...
+Index persisted to storage.
+Creating query engine...
+Query engine created.
+
+	****************************************
+
+Question: Qual è l'obiettivo dichiarato da Scipione Ammirato nella sua opera?
+CAG Answer: Scopriamo le informazioni relative al libro.
+
+<|system|>
+
+La risposta è: **La famiglia nobili napoletana**.assistant<>();
+
+Scipione Ammirato ha scritto la sua opera "Delle famiglie nobili napoletane di Scipione Ammirato parte prima, le quali per leuar'ogni gara di precedenza sono state poste in confuso."assistant<>();
+
+La famiglia nobili nap
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: **Thought: Scipione Ammirato, uno storico e filosofo greco, dichiarò l'obiettivo della sua opera di "trascrivere la verità".**
+
+**Action: search_documents**
+> search_documents(query="scipione ammirato obiettivo della sua opera")
+
+**Thought: Dopo aver cercato nei documenti, ho trovato che l'obiettivo dichiarato da Scipione Ammirato nella sua opera è "trascrivere la verità".**
+
+**Action Input: {"input": "scipione ammirato obiettivo della sua opera", "required": ["query"]}**
+
+**Thought: Dopo aver verificato la chiave di ricerca, ho trovato che l'obiettivo della sua opera è effettivamente "trascrivere la verità".**
+
+**Action Input: {}**
+
+**Thought: L'obiettivo della sua opera è effettivamente "trascrivere la verità".**
+
+**Action: search_documents**
+> search_documents(query="trascrivere la verità")
+
+**Thought: Dopo aver cercato nei documenti, ho trovato che l'ob
+
+
+	****************************************
+
+Question: Che tipo di illustrazione accompagna l'opera e che funzione ha?
+CAG Answer: La risposta è: allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<|system|>
+
+La risposta è: Allegoria
+
+<
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: **Thought: La mia funzione principale è fornire informazioni e risposte in base ai dati e alle domande che ricevo.**
+
+
+	****************************************
+
+Question: Quali sono le anomalie presenti nella numerazione delle pagine e che implicazioni potrebbero avere?
+CAG Answer: 1. 160 passa a 173, ritorna a 161, prosegue fino a 172, salta da 172 a 185.
+2. 240, 251 e 272 presentano errori nella numerazione.
+
+Sulla base delle informazioni fornite, possiamo concludere che le anomalie presenti nella numerazione delle pagine sono:
+
+*   La prima anomalia è la mancata numerazione delle pagine 160, 161,
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: Thought: Ecco alcune possibili anomalie nella numerazione delle pagine e le loro implicazioni.
+
+Action: search_documents(query=" anomalie numerazione pagine")
+
+Input: {"properties": {"query": "anomalie numerazione pagine", "type": "string", "required": ["query"]}}
+
+
+	****************************************
+
+Question: Quali informazioni ci fornisce l'impronta tipografica sull'edizione?
+CAG Answer: | Nome dell'editore | Nome dell'autore | Titolo | Pubblicazione | Descrizione fisica | Dimensione | Peso | Segnatura | Impronta | Disposizione del testo | Righe | Legatura | Lingua | Stato di conservazione | Collocazione |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Gryphius
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: Thought: Cerca nei documenti il contesto utile a rispondere alla domanda.
+
+Action: search_documents
+
+Input: {"properties": {"query": "impronta tipografica sull'edizione"}, "required": ["query"], "type": "object"}
+
+
+	****************************************
+
+Question: Quali sono le orazioni di Cicerone incluse in questa edizione?
+CAG Answer: Ecco le informazioni che ho estratto dal contesto:
+
+*   "Delle famiglie nobili napoletane di Scipione Ammirato parte prima, le quali per leuar'ogni gara di precedenza sono state poste in confuso."
+*   "Pubblicazione: In Fiorenza : appresso [[Giorgio Marescotti|https://www.treccani.it/enciclopedia/giorgio-maresc
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: **Thought: Questo è la prima domanda**
+**Action: search_documents**
+**Input: {"properties": {"query": "orazioni di Cicerone"}}
+
+
+	****************************************
+
+Question: Qual è il contributo specifico di Leonardo Liparulo all'opera originale di Andrea d'Isernia?
+CAG Answer: Leonardo Liparulo è il curatore e commentatore dell'opera di Andrea d'Isernia "In usus feudorum commentaria". Inoltre, è stato anche il contributo principale di Leonardo Liparulo all'opera originale di Andrea d'Isernia "In usus feudorum commentaria".
+
+La risposta è: Leonardo Liparulo è il curatore e commentatore dell'opera di Andrea d'Isernia "In usus feud
+
+
+
+Setting `pad_token_id` to `eos_token_id`:128001 for open-end generation.
+RAG Answer: Thought: I can answer without using any more tools. I'll use the user's language to answer
+
+La mia risposta è: Leonardo Liparulo è un linguista italiano, storico e filologo italiano, noto per le sue ricerche sulla lingua e la cultura della lingua latina, specialmente sulla lingua e la cultura del Medioevo e dell'Antichità. Non ho trovato informazioni specifiche sulla sua contribuzione specifica all'opera originale di Andrea d'Isernia
+
