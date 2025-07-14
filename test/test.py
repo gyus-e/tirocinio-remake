@@ -8,12 +8,15 @@ from utils import Collection
 from .configuration_mock import configuration
 from .questions_mock import questions
 
+torch.set_grad_enabled(False) 
 documents = None
 
 # CAG initialization
 device = Accelerator().device
 model = AutoModelForCausalLM.from_pretrained(configuration.model_name, device_map=device)
+model.eval()
 tokenizer = AutoTokenizer.from_pretrained(configuration.model_name)
+
 
 cache_path = os.path.join(STORAGE, CACHE_NAME)
 if not os.path.exists(cache_path):
