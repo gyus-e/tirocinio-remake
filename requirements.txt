@@ -1,7 +1,7 @@
 Flask
 flask_sqlalchemy
 python-dotenv
-llama-index-core
+llama-index
 llama-index-llms-huggingface
 llama-index-embeddings-huggingface
 llama-index-vector-stores-chroma
