@@ -12,7 +12,7 @@ async def cag_chat(config_id):
         return jsonify(message="Configuration not found"), 404
 
     try:
-        query = validate_request(request)
+        query = validate_cag_chat_request(request)
     except ValueError as e:
         return jsonify(message=str(e)), 400
 
@@ -21,7 +21,7 @@ async def cag_chat(config_id):
     return jsonify(answer=answer), 200
 
 
-def validate_request(request) -> str:
+def validate_cag_chat_request(request) -> str:
     data = request.get_json() if request.is_json else request.form
     if not data:
         raise ValueError("Invalid request: No data provided")

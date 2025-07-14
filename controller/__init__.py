@@ -1,5 +1,6 @@
-from .cag import cag
+from . import cag, rag
 
 __all__ = [
     "cag",
+    "rag",
 ]

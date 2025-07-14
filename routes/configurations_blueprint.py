@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from models import Configuration
 from utils import DB
-from utils.validators import validate_request
+from utils.validators import validate_configuration_request
 
 configurations_blueprint = Blueprint("configurations", __name__)
 
@@ -22,7 +22,7 @@ def get_configuration(config_id):
 @configurations_blueprint.post("/configurations")
 def initialize_configuration():
     try:
-        system_prompt, model_name, rag_configuration, warnings = validate_request(request)
+        system_prompt, model_name, rag_configuration, warnings = validate_configuration_request(request)
         configuration = Configuration(
             system_prompt=system_prompt, 
             model_name=model_name,

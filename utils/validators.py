@@ -1,7 +1,20 @@
 import json
 from flask import Request
 
-def validate_request(request: Request) -> tuple[str, str, dict | None, list[str]]:
+
+def validate_cag_chat_request(request) -> str:
+    data = request.get_json() if request.is_json else request.form
+    if not data:
+        raise ValueError("Invalid request: No data provided")
+
+    query = data.get("query")
+    if not query:
+        raise ValueError("Invalid request: No query provided")
+
+    return query
+
+
+def validate_configuration_request(request: Request) -> tuple[str, str, dict | None, list[str]]:
     data = request.get_json() if request.is_json else request.form
     if not data:
         raise ValueError("Invalid request: No data provided")
