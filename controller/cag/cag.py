@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 import torch
 from accelerate import Accelerator
 from transformers.cache_utils import DynamicCache
@@ -7,7 +6,7 @@ from environ import CACHE_NAME, STORAGE
 
 
 _accelerator = Accelerator()
-_DEFAULT_CACHE_LEN = 0
+_default_cache_len: int | None = None
 
 def create_kv_cache(model, tokenizer, prompt: str) -> DynamicCache:
     """prepares a reusable key-value cache for a transformer model's attention mechanism."""
@@ -40,7 +39,8 @@ def create_kv_cache(model, tokenizer, prompt: str) -> DynamicCache:
             output_hidden_states=False,
         )
 
-    _DEFAULT_CACHE_LEN = _default_cache_len(cache)
+    global _default_cache_len
+    _default_cache_len = cache.key_cache[0].shape[-2]
     print("KV cache created.")
     # return cache
     return outputs.past_key_values
@@ -52,21 +52,18 @@ def save_cache(my_cache: DynamicCache, storage=STORAGE, cache_name=CACHE_NAME) -
     torch.save(my_cache, cache_path)
 
 
-def clean_up_cache(cache: DynamicCache, origin_len: Optional[int] = None) -> None:
+def clean_up_cache(cache: DynamicCache, origin_len: int | None = None) -> None:
     """Cleans the key-value cache by removing unnecessary entries"""
     """Trims a DynamicCache object to match the original sequence length by removing additional tokens added during processing"""
     """For each layer of the cache, it slices both the key and value tensors to retain only the first origin_len tokens along the sequence dimension"""
 
-    if origin_len == None:
-        origin_len = _DEFAULT_CACHE_LEN
+    if not origin_len:
+        global _default_cache_len
+        origin_len = _default_cache_len
 
     for i in range(len(cache.key_cache)):
         cache.key_cache[i] = cache.key_cache[i][:, :, :origin_len, :]
         cache.value_cache[i] = cache.value_cache[i][:, :, :origin_len, :]
-
-
-def _default_cache_len(cache: DynamicCache) -> int:
-    return cache.key_cache[0].shape[-2]
 
 
 def get_answer(
