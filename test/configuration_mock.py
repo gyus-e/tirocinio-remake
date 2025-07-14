@@ -5,14 +5,14 @@ model_name = "meta-llama/Llama-3.2-1B-Instruct"
 
 system_prompt = """
 Sei un assistente bibliotecario che deve fornire informazioni sui libri nel catalogo della Biblioteca Pontaniana di Napoli.
-Rispondi alle domande degli utenti utilizzando le informazioni presenti nei documenti forniti.
+Rispondi alle domande degli utenti utilizzando le informazioni presenti nel contesto fornito.
 """
 
 rag_configuration = {
     "embed_model_name": "BAAI/bge-base-en-v1.5",
     "chunk_size": 512,
     "chunk_overlap": 64,
-    "temperature": 0.0,
+    "temperature": 0.2,
 }
 
 configuration = Configuration(system_prompt, model_name, rag_configuration)
