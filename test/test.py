@@ -13,7 +13,7 @@ documents = None
 
 # CAG initialization
 device = Accelerator().device
-model = AutoModelForCausalLM.from_pretrained(configuration.model_name, device_map=device)
+model = AutoModelForCausalLM.from_pretrained(configuration.model_name, device_map="auto")
 model.eval()
 tokenizer = AutoTokenizer.from_pretrained(configuration.model_name)
 
