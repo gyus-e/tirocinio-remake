@@ -8,3 +8,4 @@ llama-index-vector-stores-chroma
 transformers
 accelerate
 torch
+hf_xet

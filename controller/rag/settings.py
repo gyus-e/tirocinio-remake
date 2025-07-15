@@ -1,18 +1,26 @@
 import os
-from accelerate import Accelerator
-from llama_index.core import Settings 
+from llama_index.core import Settings
 from llama_index.llms.huggingface import HuggingFaceLLM
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from models import Configuration
+from utils import LLM
 from environ import HF_HOME, EMBED_MODEL_DIR
 
 
-def initialize_settings(config: Configuration):
+def initialize_settings(config: Configuration, llm: LLM | None = None):
     rag_settings = config.rag_configuration
     if not rag_settings:
         raise ValueError("RAG configuration is missing in the provided configuration.")
-    
-    embed_model_name: str = rag_settings.get("embed_model_name", "BAAI/bge-base-en-v1.5")
+
+    if not llm:
+        model_name = rag_settings.get("model_name")
+        if not model_name:
+            raise ValueError("Model name is required in the RAG configuration.")
+        llm = LLM(model_name)
+
+    embed_model_name: str = rag_settings.get(
+        "embed_model_name", "BAAI/bge-base-en-v1.5"
+    )
     chunk_size: int = rag_settings.get("chunk_size", 512)
     chunk_overlap: int = rag_settings.get("chunk_overlap", 50)
 
@@ -25,8 +33,8 @@ def initialize_settings(config: Configuration):
     kwargs = {"top_p": top_p} if top_p else kwargs
 
     Settings.llm = HuggingFaceLLM(
-        model_name=config.model_name,
-        tokenizer_name=config.model_name,
+        model=llm.model(),
+        tokenizer=llm.tokenizer(),
         # context_window=CONTEXT_WINDOW if CONTEXT_WINDOW else DEFAULT_CONTEXT_WINDOW,
         generate_kwargs=kwargs,
     )

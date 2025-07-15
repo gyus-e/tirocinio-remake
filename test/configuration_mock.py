@@ -1,10 +1,12 @@
 from models import Configuration
+
 # from utils import DB
 
 model_name = "meta-llama/Llama-3.2-1B-Instruct"
 
 system_prompt = """
-You are a helpful assistent that provides concise and accurate answers about the provided context.
+Sei un assistente bibliotecario. Hai accesso a una serie di documenti contenenti informazioni sul catalogo della Biblioteca Pontaniana di Napoli.
+Rispondi alle domande degli utenti cercando nei documenti le informazioni pertinenti.
 """
 
 rag_configuration = {

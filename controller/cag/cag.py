@@ -8,6 +8,7 @@ from environ import CACHE_NAME, STORAGE
 _accelerator = Accelerator()
 _default_cache_len: int | None = None
 
+
 def create_kv_cache(model, tokenizer, prompt: str) -> DynamicCache:
     """prepares a reusable key-value cache for a transformer model's attention mechanism."""
     """passes a prompt through the model once, creating a KV cache that records all the hidden states from each layer"""
@@ -21,7 +22,9 @@ def create_kv_cache(model, tokenizer, prompt: str) -> DynamicCache:
 
     # Tokenize the prompt using the tokenizer and convert it into input IDs
     # input_ids: torch.Tensor = tokenizer(prompt, return_tensors="pt").input_ids.to(torch_device)
-    input_ids: torch.Tensor = tokenizer.encode(prompt, return_tensors="pt").to(torch_device)
+    input_ids: torch.Tensor = tokenizer.encode(prompt, return_tensors="pt").to(
+        torch_device
+    )
     print("Prompt tokenized.")
 
     # Initialize the DynamicCache object
@@ -79,7 +82,10 @@ def get_answer(
 
 
 def _generate(
-    model, input_ids: torch.Tensor, past_key_values: DynamicCache, max_new_tokens: int = 300
+    model,
+    input_ids: torch.Tensor,
+    past_key_values: DynamicCache,
+    max_new_tokens: int = 300,
 ) -> torch.Tensor:
     """The generate function handles token-by-token generation with the cached knowledge using greedy decoding."""
     """Greedy decoding is a simple text generation method where, at each step, the token with the highest probability (maximum value in the logits) is selected as the next token."""
@@ -98,14 +104,15 @@ def _generate(
     output_ids: torch.Tensor = input_ids.clone()
     next_token: torch.Tensor = input_ids
 
-    eos_token_ids = (
-        [model.config.eos_token_id]
-        if isinstance(model.config.eos_token_id, int)
-        else model.config.eos_token_id or []
-    )
+    # copilot generated array of end-of-sequence token IDs to use for early stopping (see below)
+    # eos_token_ids = (
+    #     [model.config.eos_token_id]
+    #     if isinstance(model.config.eos_token_id, int)
+    #     else model.config.eos_token_id or []
+    # )
 
     with torch.no_grad():
-        for _ in range(max_new_tokens):
+        for token in range(max_new_tokens):
             # Process current input token in next_token and cached past_key_values
             output = model(
                 input_ids=next_token,
@@ -117,7 +124,7 @@ def _generate(
             # Identify the token with the highest probability using greedy decoding
             # next_token = torch.argmax(next_token_logits, dim=-1, keepdim=True)
             next_token = next_token_logits.argmax(dim=-1).unsqueeze(-1)
-   
+
             # This new token is appended to the output sequence
             output_ids = torch.cat([output_ids, next_token], dim=-1)
 
@@ -128,13 +135,10 @@ def _generate(
             next_token = next_token.to(torch_device)
 
             # Terminate early if an end-of-sequence token is generated
-            if any(next_token.item() == eid for eid in eos_token_ids):
-                break
-
-            # if (
-            #     model.config.eos_token_id is not None
-            #     and token.item() == model.config.eos_token_id
-            # ):
+            # if any(next_token.item() == eid for eid in eos_token_ids):
             #     break
+
+            if (next_token.item() in model.config.eos_token_id) and (token > 0):
+                break
 
     return output_ids[:, origin_len:]
