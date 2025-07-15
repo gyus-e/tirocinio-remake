@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from environ import STORAGE, CACHE_NAME, VECTOR_STORE_DIR
 from controller import cag, rag
 from utils import Collection, LLM
-from .configuration_mock import configuration
+from .configuration_mock import configuration, cag_system_prompt, rag_system_prompt
 from .questions_mock import questions
 
 torch.set_grad_enabled(False)
@@ -20,10 +20,7 @@ if not os.path.exists(cache_path):
 
     document_texts = [doc.text for doc in documents]
     cag_prompt = cag.build_cag_context(
-        system_prompt="""
-            Sei un assistente bibliotecario. Nel contesto ti sono fornite informazioni sul catalogo della Biblioteca Pontaniana di Napoli.
-            Rispondi alle domande degli utenti con le informazioni pertinenti.
-        """,
+        system_prompt=cag_system_prompt,
         document_texts=document_texts,
     )
 
@@ -48,7 +45,7 @@ else:
 
 query_engine = rag.QueryEngine(index=index).query_engine()
 rag_agent = rag.Agent(
-    query_engine=query_engine, system_prompt=configuration.system_prompt
+    query_engine=query_engine, system_prompt=rag_system_prompt
 )
 agent = rag_agent.agent()
 context = rag_agent.context()
